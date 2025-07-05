@@ -89,7 +89,8 @@ INSTALLED_APPS = [
     'django_prometheus',
 
     'profile_app',
-    'post_app'
+    'post_app',
+    'request_app'
  
 ]
 

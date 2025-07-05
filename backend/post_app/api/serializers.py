@@ -2,9 +2,7 @@ from rest_framework import serializers
 from django.conf import settings
 from django.contrib.auth.models import User
 
-
 from rest_framework import serializers
-
 from post_app.models import * 
 from profile_app.api.serializers import ProfileSerializer
 
@@ -32,7 +30,7 @@ class PostWithRelatedSerializer(serializers.ModelSerializer):
         
 class  CommentSerializer(serializers.ModelSerializer):
     class Meta:
-        models= Comment
+        model= Comment
         fields='__all__'                                                           
 
 
@@ -41,7 +39,7 @@ class  CommentWithRelatedSerializer(serializers.ModelSerializer):
     fav_people_num=serializers.SerializerMethodField()
     replied_comments=serializers.SerializerMethodField()
     class Meta:
-        models= Comment
+        model= Comment
         fields='__all__' 
         
     def get_fav_people_num(self,obj):      
