@@ -26,4 +26,18 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     my_tags = ["Post"]
 
-
+class PostsYouSee(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    my_tags = ["Post"]   
+    def list(self,request):
+        profile_selected=Profile.get_user_jwt(self,request=self.request)
+        followings_selected=Profile.objects.filter(followers__in=[profile_selected])
+        all_posts=[]
+        for following in followings_selected:
+            posts_selected=Post.objects.filter(owner=following.id)
+            for post in posts_selected:
+                all_posts.append(post)
+       
+        posts_serialized=PostWithRelatedSerializer(all_posts, many=True)
+        return Response(posts_serialized.data)
