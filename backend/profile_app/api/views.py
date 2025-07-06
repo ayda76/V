@@ -74,9 +74,15 @@ class MyFollowers(ListAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     my_tags = ["Profile"]
+    
     def list(self,request):
         profile_selected=Profile.get_user_jwt(self,request=self.request)
-        return Response(ProfileSerializer(profile_selected.followers.all(),many=True).data)
+        followings_selected=Profile.objects.filter(followers__in=[profile_selected])
+        data={
+            'followers':ProfileSerializer(profile_selected.followers.all(),many=True).data,
+            'following':ProfileSerializer(followings_selected,many=True).data
+        }
+        return Response(data)
     
 class PasswordChangeView(APIView):
     my_tags = ["Profile"]
